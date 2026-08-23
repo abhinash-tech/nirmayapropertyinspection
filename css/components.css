@@ -812,7 +812,7 @@ textarea.form-control {
   }
   
   .process-timeline::before {
-    left: 20px;
+    left: 24px;
   }
   
   .process-step {
@@ -820,13 +820,13 @@ textarea.form-control {
   }
   
   .process-node {
-    left: 20px;
-    transform: none;
+    left: 24px;
+    transform: translateX(-50%);
   }
   
   .process-content {
-    width: calc(100% - 40px);
-    margin-left: 40px;
+    width: calc(100% - 56px);
+    margin-left: 56px;
     text-align: left !important;
     padding: 1.5rem;
   }
