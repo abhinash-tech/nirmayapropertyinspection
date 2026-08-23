@@ -223,14 +223,46 @@ function triggerAutomations(leadData, callback) {
     document.head.appendChild(style);
   }
 
-  // Mock CRM triggers
-  setTimeout(() => {
+  // Send Email via Web3Forms if configured
+  if (typeof CONFIG !== 'undefined' && CONFIG.WEB3FORMS_ACCESS_KEY) {
+    const formData = new FormData();
+    formData.append("access_key", CONFIG.WEB3FORMS_ACCESS_KEY);
+    formData.append("subject", `New ${leadData.formType === 'inspection' ? 'Inspection' : 'Contact'} Request from ${leadData.fullName || leadData.name || 'Client'}`);
+    formData.append("from_name", "Nirmaya Website Forms");
+    
+    let messageBody = `You have received a new lead from the website!\n\n`;
+    for (const [key, value] of Object.entries(leadData)) {
+      if (key !== 'id' && key !== 'submittedAt' && key !== 'formType' && value) {
+        messageBody += `${key}: ${value}\n`;
+      }
+    }
+    formData.append("message", messageBody);
+
+    fetch("https://api.web3forms.com/submit", {
+      method: "POST",
+      body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log("Email sent successfully");
+      finishAutomation();
+    })
+    .catch(error => {
+      console.error("Error sending email:", error);
+      finishAutomation();
+    });
+  } else {
+    // Fallback to simulation delay if no email API key is provided
+    setTimeout(finishAutomation, 1200);
+  }
+
+  function finishAutomation() {
     if (submitBtn) {
       submitBtn.disabled = false;
       submitBtn.innerHTML = originalText;
     }
     callback();
-  }, 1200); // 1.2s delay for realism
+  }
 }
 
 /* Renders the dynamic success modal with confirmation of details */
