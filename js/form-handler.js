@@ -288,23 +288,17 @@ function showSuccessModal(leadData) {
     ? `Thank you, <strong>${leadData.fullName || leadData.name}</strong>. Your property inspection booking for a <strong>${leadData.propertyType || 'Residential'}</strong> is scheduled. Our certified engineers will contact you shortly.`
     : `Thank you, <strong>${leadData.name}</strong>. Your message has been received. Our team will get back to you shortly.`;
 
-  const waName = leadData.fullName || leadData.name || '';
-  const waPhone = leadData.phone || leadData.phoneNumber || '';
-  const waEmail = leadData.email || '';
+  const waFormatKey = (key) => {
+    const result = key.replace(/([A-Z])/g, " $1");
+    return result.charAt(0).toUpperCase() + result.slice(1);
+  };
+
+  let waText = `Hello NIRMAYA Property Inspection, I just submitted a ${isInspection ? 'property inspection' : 'contact'} request. Here are my details:\n\n`;
   
-  let waText = '';
-  if (isInspection) {
-    waText = `Hello NIRMAYA Property Inspection, I just submitted an inspection request. Here are my details:
-*Name:* ${waName}
-*Phone:* ${waPhone}
-*Email:* ${waEmail}
-*Property Type:* ${leadData.propertyType || 'N/A'}`;
-  } else {
-    waText = `Hello NIRMAYA Property Inspection, I just submitted a contact request. Here are my details:
-*Name:* ${waName}
-*Phone:* ${waPhone}
-*Email:* ${waEmail}
-*Message:* ${leadData.message || ''}`;
+  for (const [key, value] of Object.entries(leadData)) {
+    if (key !== 'id' && key !== 'submittedAt' && key !== 'formType' && value) {
+      waText += `*${waFormatKey(key)}:* ${value}\n`;
+    }
   }
   
   const waUrl = `https://wa.me/919492868528?text=${encodeURIComponent(waText)}`;
