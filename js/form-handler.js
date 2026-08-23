@@ -230,13 +230,18 @@ function triggerAutomations(leadData, callback) {
     formData.append("subject", `New ${leadData.formType === 'inspection' ? 'Inspection' : 'Contact'} Request from ${leadData.fullName || leadData.name || 'Client'}`);
     formData.append("from_name", "Nirmaya Website Forms");
     
-    let messageBody = `You have received a new lead from the website!\n\n`;
+    // Helper function to format camelCase keys to Title Case
+    const formatKey = (key) => {
+      const result = key.replace(/([A-Z])/g, " $1");
+      return result.charAt(0).toUpperCase() + result.slice(1);
+    };
+
+    // Append each field individually so Web3Forms formats them beautifully
     for (const [key, value] of Object.entries(leadData)) {
       if (key !== 'id' && key !== 'submittedAt' && key !== 'formType' && value) {
-        messageBody += `${key}: ${value}\n`;
+        formData.append(formatKey(key), value);
       }
     }
-    formData.append("message", messageBody);
 
     fetch("https://api.web3forms.com/submit", {
       method: "POST",
