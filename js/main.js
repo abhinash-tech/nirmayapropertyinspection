@@ -1,4 +1,4 @@
-/* NIRMAYA PROPERTY INSPECTION - Main JavaScript Interactions */
+﻿/* NIRMAYA PROPERTY INSPECTION - Main JavaScript Interactions */
 
 document.addEventListener('DOMContentLoaded', () => {
   initNavigation();

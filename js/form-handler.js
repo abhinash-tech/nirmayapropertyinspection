@@ -1,4 +1,4 @@
-/* NIRMAYA PROPERTY INSPECTION - Form Handler & Automations Simulation */
+﻿/* NIRMAYA PROPERTY INSPECTION - Form Handler & Automations Simulation */
 
 // Initialize Supabase Client if credentials are provided in CONFIG
 let supabaseClient = null;
@@ -271,7 +271,7 @@ function showSuccessModal(leadData) {
             <span style="color: var(--whatsapp-green);">●</span> Email alert sent to operations admin (nirmayapropertyinspection@gmail.com)
           </div>
           <div style="display: flex; align-items: center; gap: 0.5rem;">
-            <span style="color: var(--whatsapp-green);">●</span> WhatsApp notification triggered to office (+91 6304916429)
+            <span style="color: var(--whatsapp-green);">●</span> WhatsApp notification triggered to office (+91 9492868528)
           </div>
           <div style="display: flex; align-items: center; gap: 0.5rem;">
             <span style="color: var(--whatsapp-green);">●</span> Confirmation email sent to client (${leadData.email})

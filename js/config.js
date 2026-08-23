@@ -1,4 +1,4 @@
-// NIRMAYA Property Inspection - Global Configuration
+﻿// NIRMAYA Property Inspection - Global Configuration
 const CONFIG = {
   // Supabase Credentials
   // Paste your Supabase Project URL and Anon Key here to enable database storage
