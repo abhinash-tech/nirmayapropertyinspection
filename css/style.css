@@ -1,4 +1,4 @@
-/* NIRMAYA PROPERTY INSPECTION - Global Style System */
+﻿/* NIRMAYA PROPERTY INSPECTION - Global Style System */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Poppins:wght@400;500;600;700&display=swap');
 
 :root {
@@ -38,6 +38,11 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
 }
 
 html {
@@ -195,3 +200,4 @@ a {
   h1 { font-size: 2rem; }
   h2 { font-size: 1.65rem; }
 }
+

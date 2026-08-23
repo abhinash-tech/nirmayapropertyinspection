@@ -1,4 +1,4 @@
-/* NIRMAYA PROPERTY INSPECTION - UI Components Style System */
+﻿/* NIRMAYA PROPERTY INSPECTION - UI Components Style System */
 
 /* Header / Navigation */
 .header {
@@ -250,6 +250,7 @@
 }
 
 .form-control {
+  width: 100%;
   font-family: var(--font-body);
   font-size: 0.95rem;
   padding: 0.85rem 1.25rem;
@@ -277,6 +278,7 @@
 }
 
 textarea.form-control {
+  width: 100%;
   min-height: 120px;
   resize: vertical;
 }
@@ -889,3 +891,4 @@ textarea.form-control {
   align-items: center;
   justify-content: center;
 }
+
