@@ -2,7 +2,7 @@
 const CONFIG = {
   // Web3Forms Configuration (For sending emails)
   // Get your free access key at https://web3forms.com/ by entering nirmayapropertyinspection@gmail.com
-  WEB3FORMS_ACCESS_KEY: "",
+  WEB3FORMS_ACCESS_KEY: "a18dbda5-748d-4cea-a446-9ababf25c970",
 
   // Supabase Credentials
   // Paste your Supabase Project URL and Anon Key here to enable database storage
@@ -13,7 +13,7 @@ const CONFIG = {
   // If you want submissions to go to Google Forms, paste your Form Response URL and Entry IDs here
   // Example: "https://docs.google.com/forms/u/0/d/e/1FAIpQLSfXXXXXX/formResponse"
   GOOGLE_FORM_URL: "",
-  
+
   // Map your HTML form input names to the Google Form "entry.XXXX" field IDs
   GOOGLE_FORM_ENTRY_IDS: {
     name: "entry.1000000",       // Replace with actual entry ID from your Google Form
