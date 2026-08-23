@@ -251,44 +251,47 @@ function showSuccessModal(leadData) {
     ? `Thank you, <strong>${leadData.fullName || leadData.name}</strong>. Your property inspection booking for a <strong>${leadData.propertyType || 'Residential'}</strong> is scheduled. Our certified engineers will contact you shortly.`
     : `Thank you, <strong>${leadData.name}</strong>. Your message has been received. Our team will get back to you shortly.`;
 
+  const waName = leadData.fullName || leadData.name || '';
+  const waPhone = leadData.phone || leadData.phoneNumber || '';
+  const waEmail = leadData.email || '';
+  
+  let waText = '';
+  if (isInspection) {
+    waText = `Hello NIRMAYA Property Inspection, I just submitted an inspection request. Here are my details:
+*Name:* ${waName}
+*Phone:* ${waPhone}
+*Email:* ${waEmail}
+*Property Type:* ${leadData.propertyType || 'N/A'}`;
+  } else {
+    waText = `Hello NIRMAYA Property Inspection, I just submitted a contact request. Here are my details:
+*Name:* ${waName}
+*Phone:* ${waPhone}
+*Email:* ${waEmail}
+*Message:* ${leadData.message || ''}`;
+  }
+  
+  const waUrl = `https://wa.me/919492868528?text=${encodeURIComponent(waText)}`;
+
   modal.innerHTML = `
-    <div class="modal-content">
+    <div class="modal-content" style="max-width: 450px;">
       <div class="modal-icon">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" style="width: 36px; height: 36px;">
           <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
         </svg>
       </div>
       <h3>${headerTitle} Successfully!</h3>
-      <p style="color: var(--text-color); margin-bottom: 1.5rem;">${confirmationMsg}</p>
+      <p style="color: var(--text-color); margin-bottom: 2rem;">${confirmationMsg}</p>
       
-      <div class="automation-logs" style="background-color: var(--bg-color); border-radius: var(--border-radius-sm); padding: 1.25rem; text-align: left; margin-bottom: 2rem; border: 1.5px solid var(--border-color); font-size: 0.85rem;">
-        <h4 style="margin-bottom: 0.75rem; font-size: 0.9rem; color: var(--primary-color);">Automated Workflow Status:</h4>
-        <div style="display: flex; flex-direction: column; gap: 0.5rem; color: var(--text-muted);">
-          <div style="display: flex; align-items: center; gap: 0.5rem;">
-            <span style="color: var(--whatsapp-green);">●</span> Lead logged in database (ID: ${leadData.id})
-          </div>
-          <div style="display: flex; align-items: center; gap: 0.5rem;">
-            <span style="color: var(--whatsapp-green);">●</span> Email alert sent to operations admin (nirmayapropertyinspection@gmail.com)
-          </div>
-          <div style="display: flex; align-items: center; gap: 0.5rem;">
-            <span style="color: var(--whatsapp-green);">●</span> WhatsApp notification triggered to office (+91 9492868528)
-          </div>
-          <div style="display: flex; align-items: center; gap: 0.5rem;">
-            <span style="color: var(--whatsapp-green);">●</span> Confirmation email sent to client (${leadData.email})
-          </div>
-          <div style="display: flex; align-items: center; gap: 0.5rem;">
-            <span style="color: var(--whatsapp-green);">●</span> WhatsApp confirmation alert sent to client (${leadData.phone || leadData.phoneNumber})
-          </div>
-          <div style="display: flex; align-items: center; gap: 0.5rem;">
-            <span style="color: var(--whatsapp-green);">●</span> Sync completed with Google Sheets (Spreadsheet ID: NIRMAYA_Leads_2026)
-          </div>
-          <div style="display: flex; align-items: center; gap: 0.5rem;">
-            <span style="color: var(--whatsapp-green);">●</span> CRM webhook pinged (Endpoint: n8n.nirmaya.internal/lead-receiver)
-          </div>
-        </div>
+      <p style="font-size: 0.95rem; margin-bottom: 1.5rem; color: var(--text-muted); font-weight: 500;">Would you like to instantly forward your details to our team via WhatsApp for faster communication?</p>
+
+      <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+        <a href="${waUrl}" target="_blank" onclick="closeModal()" class="btn btn-whatsapp" style="border-radius: var(--border-radius-sm); text-decoration: none;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.977h.004c4.368 0 7.926-3.559 7.93-7.93a7.897 7.897 0 0 0-2.33-5.617l-.001-.005zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.69-4.98c-.202-.1-1.194-.588-1.378-.654-.184-.066-.317-.1-.452.1-.134.2-.521.654-.638.787-.117.135-.235.15-.437.05-.202-.1-.852-.313-1.624-.999-.6-.535-1.005-1.197-1.122-1.398-.117-.2-.012-.307.088-.407.09-.091.202-.234.302-.35.101-.117.135-.2.203-.335.067-.133.033-.25-.017-.35-.05-.1-.452-1.09-.618-1.498-.162-.394-.326-.34-.452-.347-.116-.007-.248-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.2-.699.683-.699 1.666 0 .983.715 1.932.815 2.066.1.135 1.4 2.136 3.393 2.993.475.204.846.326 1.137.418.477.151.91.13 1.253.08.384-.059 1.194-.488 1.362-.96.168-.472.168-.876.118-.96-.05-.085-.184-.135-.386-.235z"/>
+          </svg> Send via WhatsApp
+        </a>
+        <button class="btn" onclick="closeModal()" style="border-radius: var(--border-radius-sm); border: 1.5px solid var(--border-color); background: transparent; color: var(--text-color);">Dismiss</button>
       </div>
-      
-      <button class="btn btn-primary" onclick="closeModal()" style="padding: 0.75rem 2rem; border-radius: var(--border-radius);">Dismiss</button>
     </div>
   `;
 
