@@ -1,0 +1,18 @@
+{
+  "name": "nirmaya-property-inspection",
+  "version": "1.0.0",
+  "description": "Premium property inspection website for NIRMAYA Property Inspection",
+  "main": "index.html",
+  "scripts": {
+    "dev": "npx -y http-server -p 3000 -c-1",
+    "start": "npx -y http-server -p 3000 -c-1"
+  },
+  "keywords": [
+    "property-inspection",
+    "snagging",
+    "engineering-consulting",
+    "hyderabad"
+  ],
+  "author": "NIRMAYA Property Inspection",
+  "license": "ISC"
+}
