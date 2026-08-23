@@ -1,8 +1,6 @@
 ﻿// NIRMAYA Property Inspection - Global Configuration
 const CONFIG = {
-  // Web3Forms Configuration (For sending emails)
-  // Get your free access key at https://web3forms.com/ by entering nirmayapropertyinspection@gmail.com
-  WEB3FORMS_ACCESS_KEY: "a18dbda5-748d-4cea-a446-9ababf25c970",
+
 
   // Supabase Credentials
   // Paste your Supabase Project URL and Anon Key here to enable database storage

@@ -223,43 +223,27 @@ function triggerAutomations(leadData, callback) {
     document.head.appendChild(style);
   }
 
-  // Send Email via Web3Forms if configured
-  if (typeof CONFIG !== 'undefined' && CONFIG.WEB3FORMS_ACCESS_KEY) {
-    const formData = new FormData();
-    formData.append("access_key", CONFIG.WEB3FORMS_ACCESS_KEY);
-    formData.append("subject", `New ${leadData.formType === 'inspection' ? 'Inspection' : 'Contact'} Request from ${leadData.fullName || leadData.name || 'Client'}`);
-    formData.append("from_name", "Nirmaya Website Forms");
-    
-    // Helper function to format camelCase keys to Title Case
-    const formatKey = (key) => {
-      const result = key.replace(/([A-Z])/g, " $1");
-      return result.charAt(0).toUpperCase() + result.slice(1);
-    };
-
-    // Append each field individually so Web3Forms formats them beautifully
-    for (const [key, value] of Object.entries(leadData)) {
-      if (key !== 'id' && key !== 'submittedAt' && key !== 'formType' && value) {
-        formData.append(formatKey(key), value);
-      }
+  // Send Email securely via our Vercel Serverless Function Backend
+  fetch("/api/submit", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(leadData)
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.success) {
+      console.log("Email sent securely via backend");
+    } else {
+      console.warn("Backend response:", data.error);
     }
-
-    fetch("https://api.web3forms.com/submit", {
-      method: "POST",
-      body: formData
-    })
-    .then(response => response.json())
-    .then(data => {
-      console.log("Email sent successfully");
-      finishAutomation();
-    })
-    .catch(error => {
-      console.error("Error sending email:", error);
-      finishAutomation();
-    });
-  } else {
-    // Fallback to simulation delay if no email API key is provided
-    setTimeout(finishAutomation, 1200);
-  }
+    finishAutomation();
+  })
+  .catch(error => {
+    console.error("Error communicating with secure backend:", error);
+    finishAutomation();
+  });
 
   function finishAutomation() {
     if (submitBtn) {
