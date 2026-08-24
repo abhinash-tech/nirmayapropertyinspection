@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Premium property inspection website for NIRMAYA Property Inspection",
   "main": "index.html",
+  "type": "module",
   "scripts": {
     "dev": "npx -y http-server -p 3000 -c-1",
     "start": "npx -y http-server -p 3000 -c-1"
