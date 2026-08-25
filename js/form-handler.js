@@ -1,4 +1,4 @@
-﻿/* NIRMAYA PROPERTY INSPECTION - Form Handler & Automations Simulation */
+/* NIRMAYA PROPERTY INSPECTION - Form Handler & Automations Simulation */
 
 // Initialize Supabase Client if credentials are provided in CONFIG
 let supabaseClient = null;
@@ -231,24 +231,41 @@ function triggerAutomations(leadData, callback) {
     };
 
     const isInspectionEmail = leadData.formType === 'inspection';
-    let msgLines = [
-      `New ${isInspectionEmail ? 'Property Inspection' : 'Contact'} Request`,
-      '==============================',
-      ''
-    ];
+
+    // Build HTML message with bold labels
+    let htmlRows = '';
     for (const [key, value] of Object.entries(leadData)) {
       if (key !== 'id' && key !== 'submittedAt' && key !== 'formType' && value) {
-        msgLines.push(`${formatKey(key)}: ${value}`);
+        htmlRows += `<tr>
+          <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;width:40%;"><strong style="color:#1a1a1a;">${formatKey(key)}</strong></td>
+          <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#444;">${value}</td>
+        </tr>`;
       }
     }
-    msgLines.push('');
-    msgLines.push('Submitted via: nirmayapropertyinspection.in');
+
+    const htmlMessage = `
+      <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;">
+        <div style="background:#1B4332;padding:20px 24px;border-radius:8px 8px 0 0;">
+          <h2 style="color:#ffffff;margin:0;font-size:18px;">
+            🏠 New ${isInspectionEmail ? 'Property Inspection' : 'Contact'} Request
+          </h2>
+        </div>
+        <div style="border:1px solid #e0e0e0;border-top:none;border-radius:0 0 8px 8px;overflow:hidden;">
+          <table style="width:100%;border-collapse:collapse;">
+            ${htmlRows}
+          </table>
+        </div>
+        <p style="font-size:12px;color:#999;margin-top:12px;text-align:center;">
+          Submitted via <a href="https://nirmayapropertyinspection.in" style="color:#1B4332;">nirmayapropertyinspection.in</a>
+        </p>
+      </div>
+    `;
 
     const w3fPayload = {
       access_key: CONFIG.WEB3FORMS_ACCESS_KEY,
       subject: `New ${isInspectionEmail ? 'Inspection' : 'Contact'} Request from ${leadData.fullName || leadData.name || 'Client'}`,
       from_name: 'Nirmaya Website Forms',
-      message: msgLines.join('\n'),
+      message: htmlMessage,
     };
 
     fetch('https://api.web3forms.com/submit', {
