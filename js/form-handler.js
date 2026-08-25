@@ -223,27 +223,52 @@ function triggerAutomations(leadData, callback) {
     document.head.appendChild(style);
   }
 
-  // Send Email securely via our Vercel Serverless Function Backend
-  fetch("/api/submit", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(leadData)
-  })
-  .then(response => response.json())
-  .then(data => {
-    if (data.success) {
-      console.log("Email sent securely via backend");
-    } else {
-      console.warn("Backend response:", data.error);
+  // Send Email directly via Web3Forms (client-side, free plan compatible)
+  if (typeof CONFIG !== 'undefined' && CONFIG.WEB3FORMS_ACCESS_KEY) {
+    const formatKey = (key) => {
+      const result = key.replace(/([A-Z])/g, ' $1');
+      return result.charAt(0).toUpperCase() + result.slice(1);
+    };
+
+    const isInspectionEmail = leadData.formType === 'inspection';
+    let msgLines = [
+      `New ${isInspectionEmail ? 'Property Inspection' : 'Contact'} Request`,
+      '==============================',
+      ''
+    ];
+    for (const [key, value] of Object.entries(leadData)) {
+      if (key !== 'id' && key !== 'submittedAt' && key !== 'formType' && value) {
+        msgLines.push(`${formatKey(key)}: ${value}`);
+      }
     }
-    finishAutomation();
-  })
-  .catch(error => {
-    console.error("Error communicating with secure backend:", error);
-    finishAutomation();
-  });
+    msgLines.push('');
+    msgLines.push('Submitted via: nirmayapropertyinspection.in');
+
+    const w3fPayload = {
+      access_key: CONFIG.WEB3FORMS_ACCESS_KEY,
+      subject: `New ${isInspectionEmail ? 'Inspection' : 'Contact'} Request from ${leadData.fullName || leadData.name || 'Client'}`,
+      from_name: 'Nirmaya Website Forms',
+      message: msgLines.join('\n'),
+    };
+
+    fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify(w3fPayload),
+    })
+    .then(r => r.json())
+    .then(result => {
+      if (result.success) console.log('Email sent via Web3Forms');
+      else console.warn('Web3Forms error:', result.message);
+      finishAutomation();
+    })
+    .catch(err => {
+      console.error('Email send failed:', err);
+      finishAutomation();
+    });
+  } else {
+    setTimeout(finishAutomation, 1200);
+  }
 
   function finishAutomation() {
     if (submitBtn) {

@@ -1,6 +1,9 @@
-﻿// NIRMAYA Property Inspection - Global Configuration
+// NIRMAYA Property Inspection - Global Configuration
 const CONFIG = {
-
+  // Web3Forms Access Key - used to send lead emails to nirmayapropertyinspection@gmail.com
+  // This key is safe to be public — it can ONLY send emails to your registered Gmail address.
+  // Get/replace your key at: https://web3forms.com/
+  WEB3FORMS_ACCESS_KEY: "",
 
   // Supabase Credentials
   // Paste your Supabase Project URL and Anon Key here to enable database storage
