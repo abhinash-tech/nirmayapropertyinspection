@@ -1,0 +1,8 @@
+﻿User-agent: *
+Allow: /
+
+# Block sensitive files from crawlers
+Disallow: /js/config.js
+Disallow: /api/
+
+Sitemap: https://www.nirmayapropertyinspection.in/sitemap.xml
